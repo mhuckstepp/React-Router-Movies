@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import SavedList from "./Movies/SavedList";
-import { Router, Route } from "react-router-dom";
+import { Route, NavLink } from "react-router-dom";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
+import SavedListPage from "./Movies/SavedListPage";
 
 export default function App() {
   const [saved, setSaved] = useState([]); // Stretch: the ids of "saved" movies
@@ -25,24 +26,44 @@ export default function App() {
   }, []);
 
   const addToSavedList = (id) => {
-    // This is stretch. Prevent the same movie from being "saved" more than once
+    movieList.map((movie) => {
+      if (id === movie.id && !saved.map((elem) => elem.id).includes(id)) {
+        return setSaved([...saved, movie]);
+      } else {
+        return null;
+      }
+    });
+  };
+
+  const style = {
+    textDecoration: "none",
+    color: "black",
+  };
+
+  const activeStyle = {
+    fontWeight: "bold",
+    color: "blue",
   };
 
   return (
     <div>
-      <SavedList
-        list={
-          [
-            /* This is stretch */
-          ]
-        }
-      />
-
+      <nav>
+        <NavLink exact to="/" style={style} activeStyle={activeStyle}>
+          <div>Home</div>
+        </NavLink>
+        <NavLink to="/saved" activeStyle={activeStyle} style={style}>
+          <div>Saved</div>
+        </NavLink>
+      </nav>
+      <SavedList list={saved} />
       <Route exact path="/">
         <MovieList movies={movieList} />
       </Route>
       <Route path="/movies/:id">
-        <Movie />
+        <Movie addToSavedList={addToSavedList} />
+      </Route>
+      <Route path="/saved">
+        <SavedListPage list={saved} />
       </Route>
     </div>
   );
