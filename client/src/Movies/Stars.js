@@ -9,7 +9,6 @@ export default function Stars(props) {
   };
 
   if (!stars) {
-    console.log(stars);
     return <div style={style}>No Stars Provided</div>;
   }
 

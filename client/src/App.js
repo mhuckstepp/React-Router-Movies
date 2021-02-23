@@ -27,7 +27,8 @@ export default function App() {
 
   const addToSavedList = (id) => {
     movieList.map((movie) => {
-      if (id === movie.id && !saved.map((elem) => elem.id).includes(id)) {
+      // if (id === movie.id && !saved.map((elem) => elem.id).includes(id)) {
+      if (id === movie.id && !saved.find((elem) => elem.id === movie.id)) {
         return setSaved([...saved, movie]);
       } else {
         return null;
